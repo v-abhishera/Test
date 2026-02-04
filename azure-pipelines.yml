@@ -1,0 +1,29 @@
+trigger:
+- main
+
+pool: Default
+
+resources:
+  repositories:
+  - repository: ghrepo          # local alias used in checkout
+    type: github                # use 'github' for github.com
+    name: v-abhishera/Test
+    endpoint: Git
+
+steps:
+- checkout: ghrepo
+  clean: true
+
+- powershell: |
+    Write-Host "CI running from GitHub repo checked out using Service Connection."
+    New-Item -ItemType Directory -Force -Path "$(Build.ArtifactStagingDirectory)\drop" | Out-Null
+    Get-Date | Out-File "$(Build.ArtifactStagingDirectory)\drop\buildinfo.txt"
+    Get-ChildItem -Recurse | Select-Object -First 50
+  displayName: "Build step (creates a sample output)"
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\drop'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: "Publish build artifacts (for Classic Release)"
