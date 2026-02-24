@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: window-latest
+  vmImage: windows-latest
 
 steps:
 - script: |
