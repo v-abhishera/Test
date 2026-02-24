@@ -1,0 +1,17 @@
+trigger:
+- main
+
+pool:
+  vmImage: window-latest
+
+steps:
+- script: |
+    mkdir -p $(Build.ArtifactStagingDirectory)
+    echo "hello from github repo" > $(Build.ArtifactStagingDirectory)/hello.txt
+  displayName: "Create artifact"
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
