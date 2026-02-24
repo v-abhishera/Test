@@ -2,16 +2,27 @@ trigger:
 - main
 
 pool:
-  vmImage: windows-latest
+  vmImage: 'windows-latest'
 
 steps:
-- script: |
-    mkdir -p $(Build.ArtifactStagingDirectory)
-    echo "hello from github repo" > $(Build.ArtifactStagingDirectory)/hello.txt
-  displayName: "Create artifact"
+# 1) (Optional) Show key directories for debugging
+- powershell: |
+    Write-Host "Sources: $(Build.SourcesDirectory)"
+    Write-Host "ArtifactStaging: $(Build.ArtifactStagingDirectory)"
+    Write-Host "DefaultWorkingDir: $(System.DefaultWorkingDirectory)"
+  displayName: 'Print pipeline paths'
 
+# 2) Create a tiny output (replace with your real build output)
+# IMPORTANT: Do NOT mkdir $(Build.ArtifactStagingDirectory) — it already exists.
+- powershell: |
+    New-Item -ItemType Directory -Force -Path "$(Build.ArtifactStagingDirectory)\drop" | Out-Null
+    "Hello from GitHub-based YAML build. BuildId=$(Build.BuildId)" | Out-File "$(Build.ArtifactStagingDirectory)\drop\hello.txt" -Encoding utf8
+  displayName: 'Create minimal artifact payload'
+
+# 3) Publish Build Artifacts (Classic Release can consume this)
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts (drop)'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\drop'
     ArtifactName: 'drop'
     publishLocation: 'Container'
