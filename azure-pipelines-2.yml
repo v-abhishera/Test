@@ -7,6 +7,6 @@ steps:
 - task: DownloadGitHubRelease@0
   inputs:
     connection: 'Test'
-    userRepository: 'Test'
+    userRepository: 'v-abhishera/Test'
     defaultVersionType: 'latest'
     downloadPath: '$(System.ArtifactsDirectory)'
