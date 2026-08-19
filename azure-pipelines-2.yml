@@ -4,7 +4,7 @@ pool:
   vmImage: windows-latest
 
 steps:
-- task: DownloadGitHubRelease@0
+- task: DownloadGitHubRelease@0.269.0
   inputs:
     connection: 'Test'
     userRepository: 'v-abhishera/Test'
