@@ -9,4 +9,5 @@ steps:
     connection: 'Test'
     userRepository: 'v-abhishera/Test'
     defaultVersionType: 'latest'
+    itemPattern: '**'
     downloadPath: '$(System.ArtifactsDirectory)'
