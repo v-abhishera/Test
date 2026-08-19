@@ -1,0 +1,12 @@
+trigger: none
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: DownloadGitHubRelease@0
+  inputs:
+    connection: 'Test'
+    userRepository: 'Test'
+    defaultVersionType: 'latest'
+    downloadPath: '$(System.ArtifactsDirectory)'
